@@ -146,8 +146,8 @@ Bu public futbol kimlikleri, admin yetkileri (`writer`, `authorized`, `super_adm
 ### 1. Repository'yi klonla
 
 ```bash
-git clone https://github.com/KULLANICI_ADIN/takimbul.git
-cd takimbul
+git clone https://github.com/flybyy/takimbul-public.git
+cd takimbul-public
 ```
 
 ### 2. Uygulama ayarını oluştur
