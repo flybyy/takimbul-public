@@ -22,6 +22,7 @@
 <p align="center">
   <img alt="PHP 8.1+" src="https://img.shields.io/badge/PHP-8.1%2B-777BB4?logo=php&logoColor=white">
   <img alt="MySQL" src="https://img.shields.io/badge/MySQL-8%2B-4479A1?logo=mysql&logoColor=white">
+  <img alt="Docker" src="https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker&logoColor=white">
   <img alt="Responsive" src="https://img.shields.io/badge/Responsive-Mobile%20First-159947">
   <img alt="Status" src="https://img.shields.io/badge/Status-Active-159947">
   <img alt="License" src="https://img.shields.io/badge/License-All%20Rights%20Reserved-111111">
@@ -105,6 +106,7 @@ Aşağıdaki görüntüler TakımBul'ın gerçek arayüz kodundan alınmıştır
 | Veri erişimi | PDO |
 | Frontend | HTML5, CSS3, Vanilla JavaScript |
 | Web sunucusu | Apache + `mod_rewrite` |
+| Container | Docker + Docker Compose |
 | Test / QA | PHP contract tests, HTTP smoke tests, Playwright/Chromium responsive tests |
 
 ## Mimari
@@ -133,6 +135,71 @@ Tek kullanıcı hesabı aşağıdaki kimliklerden bir veya birkaçına sahip ola
 - Kulüp Yetkilisi
 
 Bu public futbol kimlikleri, admin yetkileri (`writer`, `authorized`, `super_admin`) ile birbirinden ayrıdır.
+
+## Docker ile Çalıştırma
+
+TakımBul, PHP/Apache uygulaması ve MySQL veritabanını birlikte ayağa kaldıran Docker Compose yapılandırması içerir. Yerel makinede PHP veya MySQL kurulu olması gerekmez; yalnızca Docker Desktop / Docker Engine ve Docker Compose yeterlidir.
+
+### 1. Docker ortam dosyasını oluştur
+
+```bash
+cp .env.docker.example .env
+```
+
+İstersen `.env` içindeki port ve veritabanı parolalarını değiştirebilirsin. Yönetici hesabının otomatik hazırlanmasını istiyorsan `TAKIMBUL_ADMIN_PASSWORD` alanına güçlü bir parola yaz.
+
+### 2. Uygulamayı başlat
+
+```bash
+docker compose up -d --build
+```
+
+İlk açılışta MySQL temel şemayı yükler; uygulama container'ı veritabanını bekler, güvenli şema onarımını çalıştırır ve ardından Apache'yi başlatır.
+
+Tarayıcıdan:
+
+```text
+http://localhost:8080
+```
+
+### 3. Durumu kontrol et
+
+```bash
+docker compose ps
+./scripts/docker-smoke.sh
+```
+
+Logları izlemek için:
+
+```bash
+docker compose logs -f app db
+```
+
+### 4. Container'ları durdur
+
+Verileri koruyarak:
+
+```bash
+docker compose down
+```
+
+Veritabanı, upload ve runtime volume'larını da tamamen sıfırlamak için:
+
+```bash
+docker compose down -v
+```
+
+### Docker servisleri
+
+| Servis | Görev |
+| --- | --- |
+| `app` | PHP 8.2 + Apache, `pdo_mysql`, `mbstring`, `gd`, `opcache` |
+| `db` | MySQL 8.0, `utf8mb4` |
+| `takimbul_db_data` | Kalıcı veritabanı volume'u |
+| `takimbul_uploads` | Kullanıcı uploadları için kalıcı volume |
+| `takimbul_storage` | Log/cache/runtime dosyaları için kalıcı volume |
+
+> Docker yapılandırması geliştirme ve demo ortamı içindir. Production ortamında güçlü parolalar, HTTPS reverse proxy ve production `APP_URL` kullan.
 
 ## Kurulum
 

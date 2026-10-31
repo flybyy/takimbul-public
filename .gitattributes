@@ -1,0 +1,4 @@
+Dockerfile text eol=lf
+docker-compose.yml text eol=lf
+docker/* text eol=lf
+scripts/docker-smoke.sh text eol=lf

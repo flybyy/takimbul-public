@@ -46,3 +46,6 @@ desktop.ini
 .worktrees/
 coverage/
 .phpunit.result.cache
+
+# Tracked Docker environment template
+!.env.docker.example
