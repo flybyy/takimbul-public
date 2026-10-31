@@ -1,0 +1,25 @@
+# TakımBul DirectAdmin/cPanel compatibility layer.
+# Preferred deployment is still setting the domain document root directly to /public.
+Options -Indexes
+DirectoryIndex public/index.php
+RewriteEngine On
+
+# Never expose application/source/private directories when the whole project is
+# extracted directly into public_html.
+RewriteRule ^(?:app|config|database|docs|scripts|storage|tests|vendor)(?:/|$) - [F,L,NC]
+RewriteRule ^(?:\.git|\.github)(?:/|$) - [F,L,NC]
+
+# Public assets keep clean root URLs (/assets and /uploads).
+RewriteRule ^(assets|uploads)/(.*)$ public/$1/$2 [L]
+
+# Existing project-root files/directories are only reachable if not blocked above.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# All application routes are handled by the real public front controller.
+RewriteRule ^ public/index.php [QSA,L]
+
+<FilesMatch "^(?:\.env|app\.php|schema\.sql|composer\.(?:json|lock)|README\.md|.*\.sql)$">
+  Require all denied
+</FilesMatch>

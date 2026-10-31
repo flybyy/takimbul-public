@@ -1,0 +1,3 @@
+<?php require __DIR__.'/../layouts/header.php'; ?>
+<main class="container section-space guide-article"><article class="panel"><span class="eyebrow">TAKIMBUL REHBER</span><h1><?= htmlspecialchars($title) ?></h1><p class="lead-copy"><?= htmlspecialchars($intro) ?></p><?php foreach($sections as $section): ?><section><h2><?= htmlspecialchars($section[0]) ?></h2><p><?= htmlspecialchars($section[1]) ?></p></section><?php endforeach; ?><div class="guide-cta"><strong>Sahaya geçmeye hazır mısın?</strong><p>Takım oluştur, eksik oyuncunu veya rakibini TakımBul üzerinden bul.</p><a class="btn btn-primary" href="/uye-ol">Ücretsiz Başla</a></div></article></main>
+<?php require __DIR__.'/../layouts/footer.php'; ?>

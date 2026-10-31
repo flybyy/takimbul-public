@@ -1,0 +1,23 @@
+# TakımBul v10 Canlı Açılış Kontrol Listesi
+
+- [ ] `config/app.php` korunmuş; `app.url=https://takimbul.com.tr`, `env=production`, `debug=false`.
+- [ ] `pdo_mysql` aktif ve PHP 8.1+.
+- [ ] Mevcut kurulumda `database/migrations/2026-09-01-v10-ultimate-platform.sql` yalnızca bir kez uygulanmış.
+- [ ] `php scripts/launch-check.php` kritik `[!!]` bırakmıyor.
+- [ ] `/uye-ol` telefon + kullanıcı adı + il/ilçe + onay istiyor.
+- [ ] Yeni kayıt otomatik olarak `/profil/duzenle` akışına giriyor (e-posta doğrulaması kapalıyken).
+- [ ] `/giris` kullanıcı adı/e-posta ile çalışıyor; `/admin/giris` tamamen ayrı çalışıyor.
+- [ ] `/hesabim` telefon/e-posta güncelleme çalışıyor ve telefon public profilde görünmüyor.
+- [ ] `/admin/kullanicilar` kullanıcıları/telefonları görüyor; filtreler ve askıya alma çalışıyor.
+- [ ] `/admin/kullanici/{id}` detay, not ve reset-link işlemleri çalışıyor.
+- [ ] `/takim-ariyorum` profili kaydediliyor.
+- [ ] `/takim-bul` eşleşme filtreleri ve takım daveti çalışıyor.
+- [ ] Takım daveti kabulünde kullanıcı takım kadrosuna ekleniyor.
+- [ ] `/ara?q=...` oyuncu/takım/ilan sonuçlarını gösteriyor.
+- [ ] Admin Reklam Merkezi'nde `home_top` kampanyası aktif; ilk ana sayfa görünümünde reklam var.
+- [ ] İsteniyorsa `welcome_takeover` aktif ve aynı tarayıcı oturumunda yalnız bir kez gösteriliyor.
+- [ ] Reklam tıklaması `/reklam/tikla/{id}` üzerinden ölçülüyor ve hedef URL'ye 302 gidiyor.
+- [ ] Mobilde `mobile_feed`, masaüstünde `home_sidebar` düzeni bozulmuyor.
+- [ ] `robots.txt`, `sitemap.xml`, CSS ve JS HTTP 200.
+- [ ] 403/404/419 hata ekranları doğru HTTP koduyla açılıyor.
+- [ ] `storage/logs` içinde test sonrası yeni fatal/PDO `HY093` hatası yok.

@@ -1,0 +1,3 @@
+<?php require __DIR__.'/../layouts/header.php'; ?>
+<main class="container section-space"><div class="section-title"><div><span class="eyebrow">TAKIMBUL REHBER</span><h1>Halı saha ve amatör futbol rehberi</h1><p>Maç ayarlamayı, takım kurmayı ve doğru oyuncu/rakip bulmayı kolaylaştıran kısa, uygulanabilir rehberler.</p></div></div><div class="listing-grid guide-grid"><?php foreach($articles as $slug=>$article): ?><article class="panel guide-card"><span class="eyebrow">REHBER</span><h2><?= htmlspecialchars($article['title']) ?></h2><p><?= htmlspecialchars($article['intro']) ?></p><a class="text-link" href="/rehber/<?= urlencode($slug) ?>">Rehberi Oku →</a></article><?php endforeach; ?></div></main>
+<?php require __DIR__.'/../layouts/footer.php'; ?>

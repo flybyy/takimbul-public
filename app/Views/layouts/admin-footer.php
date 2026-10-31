@@ -1,0 +1,1 @@
+<footer class="admin-shell-footer"><div class="container">TakımBul Yönetim · kullanıcı hesaplarından bağımsız operasyon alanı</div></footer><script src="/assets/js/location-selects.js?v=104" defer></script></body></html>

@@ -1,0 +1,48 @@
+# TakımBul - GitHub public repository safety rules
+
+# Local / production secrets
+.env
+.env.*
+!.env.example
+config/app.php
+config/*.local.php
+
+# Runtime data
+storage/logs/*
+!storage/logs/.gitkeep
+storage/cache/*
+!storage/cache/.gitkeep
+
+# User generated files
+public/uploads/*
+!public/uploads/avatars/
+public/uploads/avatars/*
+!public/uploads/avatars/.gitkeep
+
+# Private keys / certificates
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.bak
+*.swp
+*.swo
+
+# Local tooling/worktrees
+.worktrees/
+coverage/
+.phpunit.result.cache

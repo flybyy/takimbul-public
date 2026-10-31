@@ -1,0 +1,20 @@
+<?php
+declare(strict_types=1);
+require __DIR__.'/bootstrap.php';
+use App\Models\Ad;
+$now=strtotime('2026-09-01 12:00:00');
+$base=['status'=>'active','placement'=>'home_feed','province'=>null,'district'=>null,'device_target'=>'all','starts_at'=>'2026-08-31 00:00:00','ends_at'=>'2026-09-30 23:59:59'];
+expect_true(Ad::eligibleForContext($base,'home_feed','Antalya','Alanya','desktop',$now),'Untargeted active ad in time window should be eligible.');
+$province=$base;$province['province']='Antalya';$province['district']='Alanya';
+expect_true(Ad::eligibleForContext($province,'home_feed','Antalya','Alanya','mobile',$now),'Matching local ad should be eligible.');
+expect_true(!Ad::eligibleForContext($province,'home_feed','İstanbul','Kadıköy','mobile',$now),'Mismatched province/district must be ineligible.');
+$mobile=$base;$mobile['device_target']='mobile';
+expect_true(!Ad::eligibleForContext($mobile,'home_feed','Antalya','Alanya','desktop',$now),'Mobile ad must not render on desktop.');
+expect_true(Ad::eligibleForContext($mobile,'home_feed','Antalya','Alanya','mobile',$now),'Mobile ad must render on mobile.');
+$paused=$base;$paused['status']='paused';
+expect_true(!Ad::eligibleForContext($paused,'home_feed','','','desktop',$now),'Paused ad must be ineligible.');
+$expired=$base;$expired['ends_at']='2026-08-31 01:00:00';
+expect_true(!Ad::eligibleForContext($expired,'home_feed','','','desktop',$now),'Expired ad must be ineligible.');
+$wrong=$base;$wrong['placement']='players_feed';
+expect_true(!Ad::eligibleForContext($wrong,'home_feed','','','desktop',$now),'Wrong placement must be ineligible.');
+echo "PASS ad_delivery_rules_test\n";

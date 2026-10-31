@@ -1,0 +1,22 @@
+<?php
+declare(strict_types=1);
+require __DIR__.'/bootstrap.php';
+$root=dirname(__DIR__);
+$controller=(string)file_get_contents($root.'/app/Controllers/AdminController.php');
+$routes=(string)file_get_contents($root.'/public/index.php');
+$dashboard=(string)file_get_contents($root.'/app/Views/admin/index.php');
+$seo=(string)file_get_contents($root.'/app/Controllers/SeoController.php');
+expect_true(str_contains($controller,"requirePermission('dashboard.editorial')"),'Admin dashboard tüm roller için editorial dashboard permission ile başlamalı.');
+expect_true(str_contains($controller,"!AdminAuth::can('dashboard')"),'Writer tam operasyon dashboarduna girmeden ayrılmalı.');
+expect_true(str_contains($controller,"News::allForAdmin((int)AdminAuth::id(),!AdminAuth::can('news.edit_any'))"),'Writer dashboard yalnız kendi haberlerini yüklemeli.');
+expect_true(is_file($root.'/app/Views/admin/writer-dashboard.php'),'Writer için ayrı editoryal dashboard bulunmalı.');
+expect_true(str_contains($controller,'public function auditLog'),'Audit log controller action bulunmalı.');
+expect_true(str_contains($controller,"gate('audit.view')"),'Audit log yalnız audit.view permission ile açılmalı.');
+expect_true(str_contains($routes,"'/admin/audit'"),'Audit log route bulunmalı.');
+expect_true(is_file($root.'/app/Views/admin/audit-log.php'),'Audit log view bulunmalı.');
+expect_true(!str_contains((string)@file_get_contents($root.'/app/Views/admin/audit-log.php'),'password_hash'),'Audit view password hash render etmemeli.');
+expect_true(str_contains($dashboard,"AdminAuth::can('ads.manage')"),'Operasyon dashboard reklam yüzeyini permission ile saklamalı.');
+expect_true(str_contains($dashboard,"AdminAuth::can('settings.manage')"),'Operasyon dashboard sistem/ayar yüzeyini permission ile saklamalı.');
+expect_true(str_contains($seo,'public_profile_enabled=1'),'Public yazar profilleri sitemapte yalnız etkin olanlardan gelmeli.');
+expect_true(str_contains($seo,"'/yazar/'"),'Yazar profilleri sitemap URL olarak eklenmeli.');
+echo "PASS v107_admin_surface_test\n";

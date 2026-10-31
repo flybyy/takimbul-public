@@ -1,0 +1,26 @@
+<?php
+declare(strict_types=1);
+require __DIR__.'/bootstrap.php';
+$newsModel=(string)file_get_contents(dirname(__DIR__).'/app/Models/News.php');
+expect_true(str_contains($newsModel,'created_by_admin_id'),'News ownership created_by_admin_id ile korunmalı.');
+expect_true(str_contains($newsModel,'author_name'),'Public news sorgusu author join taşımalı.');
+expect_true(str_contains($newsModel,'canAdminMutate'),'News::canAdminMutate helper bulunmalı.');
+$controller=(string)file_get_contents(dirname(__DIR__).'/app/Controllers/NewsController.php');
+expect_true(str_contains($controller,"requirePermission('news.create')"),'News create permission guard olmalı.');
+expect_true(str_contains($controller,"news.edit_any"),'Diğer yazar haberi için edit_any kontrolü olmalı.');
+expect_true(str_contains($controller,'HttpError::render(403'),'Writer ownership ihlalinde 403 olmalı.');
+$authorController=dirname(__DIR__).'/app/Controllers/AuthorController.php';
+$authorView=dirname(__DIR__).'/app/Views/authors/show.php';
+expect_true(is_file($authorController),'AuthorController bulunmalı.');
+expect_true(is_file($authorView),'Public yazar sayfası bulunmalı.');
+$admin=(string)file_get_contents(dirname(__DIR__).'/app/Models/Admin.php');
+expect_true(str_contains($admin,'findPublicBySlug'),'Safe public author lookup bulunmalı.');
+expect_true(str_contains($admin,'public_profile_enabled'),'Public author only enabled profile göstermeli.');
+expect_true(!str_contains((string)file_get_contents($authorView),'password_hash'),'Yazar sayfasında password hash olmamalı.');
+$newsShow=(string)file_get_contents(dirname(__DIR__).'/app/Views/news/show.php');
+expect_true(str_contains($newsShow,'author_name'),'Haber detayında yazar adı bulunmalı.');
+$seo=(string)file_get_contents(dirname(__DIR__).'/app/Core/Seo.php');
+expect_true(str_contains($seo,"'@type'=>'Person'"),'NewsArticle author Person şeması olmalı.');
+$routes=(string)file_get_contents(dirname(__DIR__).'/public/index.php');
+expect_true(str_contains($routes,"/yazar/{slug}"),'Yazar route bulunmalı.');
+echo "PASS v107_editorial_author_test\n";
